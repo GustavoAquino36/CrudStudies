@@ -5,7 +5,8 @@ def entrar():
     print('Olá, Bem vindo ao teste de Login')
     cursor = input('Gostaria de Entrar ou se registrar?\n')
 
-def sistema(cursor):
+def sistema():
+    global user, senha
     if cursor.casefold() in ['entrar', 'logar', 'acessar', 'login', 'log']:
         user = input('Qual seu user?\n')
         senha = pwinput(prompt = 'Qual senha?\n', mask = '*')
@@ -24,7 +25,7 @@ def loga(user, senha):
         if nome == user and password == senha:
             logou = True
     if logou:
-        print('logado')
+        menuShow()
     else:
         print('banido')
 
@@ -32,5 +33,26 @@ def registra(user, senha):
     data = open('data base txt path here', 'a')
     data.write(f'\n{user} - {senha}')
 
-entrar()
-sistema(cursor)
+def menuShow():
+    global escolha
+    escolha = input('''
+========== CRUD Menu ==========
+
+[1] Registrar novo login
+[2] Consulta de Logs
+[3] c
+[4] d
+[0] x\n ''')
+
+
+def addLog():
+     if escolha == '1':
+        newname = input('User a ser registrado:\n')
+        newsenha = input('Senha a ser registrado:\n')
+        registra(newname, newsenha)
+
+def showlog():
+    if escolha == '2':
+        data = open('C:/Users/Gustavo/Desktop/Estudo/crudEstudo/CrudStudies/logInfo.txt', 'r')
+        for log in data:
+            print(log)
