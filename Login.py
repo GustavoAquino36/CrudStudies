@@ -18,7 +18,7 @@ def sistema():
 
 def loga(user, senha):
     logou = False
-    data = open('C:/Users/Gustavo/Desktop/Estudo/crudEstudo/CrudStudies/logInfo.txt', 'r')
+    data = open('data base txt path here', 'r')
     for log in data:
         nome, password = log.split(' - ')
         password = password.strip()
@@ -30,7 +30,7 @@ def loga(user, senha):
         print('banido')
 
 def registra(user, senha):
-    data = open('C:/Users/Gustavo/Desktop/Estudo/crudEstudo/CrudStudies/logInfo.txt', 'a')
+    data = open('data base txt path here', 'a')
     data.write(f'\n{user} - {senha}')
 
 def menuShow():
