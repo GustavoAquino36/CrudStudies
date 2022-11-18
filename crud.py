@@ -1,6 +1,4 @@
 from Login import *
 
-entrar()
-sistema()
-addLog()
-showlog()
+mainMenu()
+cursor()
