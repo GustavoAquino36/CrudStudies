@@ -1,4 +1,4 @@
-from pwinput import pwinput
+from getpass import *
 import os
 
 def mainMenu():
@@ -19,7 +19,7 @@ def cursor():
 
 def loga():
     user = input('Login: ')
-    senha = pwinput(prompt='Senha: ', mask='')
+    senha = getpass('Senha: ')
     logou = False
     data = open('txt data base path here', 'r')
     for log in data:
@@ -35,7 +35,7 @@ def loga():
 def registra():
     try:
         user = input('User a ser registrado: ')
-        senha = pwinput(prompt='Senha a ser registrada: ', mask='')
+        senha = getpass('Senha a ser registrada: ')
         data = open('txt data base path here', 'a')
         data.write(f'\n{user} - {senha}')
     finally:
