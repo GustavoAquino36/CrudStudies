@@ -6,21 +6,39 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def csvfile():
-    with open('C:/Users/Gustavo/Desktop/Estudo/crudEstudo/CrudStudies/logInfo.csv', 'r') as userscsv:
-        linhas = csv.reader(userscsv, delimiter = ',')
-        data = []
-        for log in linhas:
-            data.append(log)
-    for i in data:
+    userscsv = open('logInfo.csv', 'r')
+    linhas = csv.reader(userscsv, delimiter = ',')
+    dataarray = []
+    for log in linhas:
+        dataarray.append(log)
+    for i in dataarray:
         print(i)
     
 def userinfo():
-    with open('C:/Users/Gustavo/Desktop/Estudo/crudEstudo/CrudStudies/userInfo.csv', 'r') as usersinfo:
-        linhas = csv.reader(usersinfo, delimiter=',')
-        data = {}
-        for log in linhas:
-            data[log[0]] = log[1:]
-        print(data)
+    global user, dataobj
+    clear()
+    user = input('Qual user Quer puxar as informacoes? (email e linkedin)\n').casefold()
+    ruser = open('userInfo.csv', 'r')
+    linhas = csv.reader(ruser, delimiter=',')
+    dataobj = {}
+    for log in linhas:
+        dataobj[log[0]] = log[1:]
+    showUserInfo()
+def showUserInfo():
+    try:
+        clear()
+        info = print(f'User: {user} \nEmail: {dataobj[user][0]} \nLinkedin: {dataobj[user][1]}')
+        backToMenu = input(f'[0] Para retornar ao menu inicial\n ')
+        while not backToMenu == '0':
+            showUserInfo()
+        else:
+            mainMenu()
+    except KeyError:
+        noUserError = input(f'User {user} nao encontrado, Gostaria de Registra-lo?\n')
+        if noUserError.casefold() in ['sim','yes','y','s','quero']:
+            registra()
+        else:
+            mainMenu()
 
 def mainMenu():
     clear()
@@ -29,31 +47,20 @@ def mainMenu():
 ========== CRUD Menu ==========
 
 [1] Registrar novo login
-[2] b
+[2] Consulta de usuario
 [3] c
 [4] d
 [0] Fechar programa\n ''')
+    cursor()
 
 def cursor():
     if escolha == '1':
         return registra()
-
-def loga(): # Log will be important later on
-    user = input('Login: ')
-    senha = getpass('Senha: ')
-    logou = False
-    data = open('txt data base path here', 'r')
-    for log in data:
-        nome, password = log.split(',')
-        password = password.strip()
-        if nome == user and password == senha:
-            logou = True
-    if logou:
-        mainMenu()
-    else:
-        print('banido')
+    elif escolha == '2':
+        return userinfo()
 
 def registra():
+    clear()
     try:
         user = input('User a ser registrado: ')
         senha = getpass('Senha a ser registrada: ')
@@ -62,5 +69,4 @@ def registra():
     finally:
         return mainMenu()
 
-userinfo() # learning about csv as the codes goes, still simple usage, improving...
-
+mainMenu()
