@@ -1,5 +1,0 @@
-admin - admin
-teste - senha
-adilson - caminhoneiro
-steve - tyler
-gustavo - borges
