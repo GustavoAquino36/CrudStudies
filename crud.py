@@ -35,7 +35,7 @@ def register():
         user = input('User a ser registrado: ')
         senha = getpass('Senha a ser registrada: ')
         data = open('logInfo.csv', 'a')
-        data.write(f'\n{user},{senha}')
+        data.write(f'{user},{senha}\n')
     finally:
         return mainMenu()
 
@@ -89,7 +89,7 @@ def deleteUser():
 
 def updatefile(updatedlist):
     with open("logInfo.csv", "w", newline="") as csvfile:
-        Writer = csv.writer(csvfile, lineterminator='')
+        Writer = csv.writer(csvfile)
         Writer.writerows(updatedlist)
     backToMenu = input('[0] para voltar ao menu\n')
     if backToMenu == '0':
