@@ -89,7 +89,7 @@ def deleteUser():
 
 def updatefile(updatedlist):
     with open("logInfo.csv", "w", newline="") as csvfile:
-        Writer = csv.writer(csvfile)
+        Writer = csv.writer(csvfile, lineterminator='')
         Writer.writerows(updatedlist)
     backToMenu = input('[0] para voltar ao menu\n')
     if backToMenu == '0':
