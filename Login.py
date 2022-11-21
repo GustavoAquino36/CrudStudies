@@ -1,6 +1,7 @@
 from getpass import *
 import csv
 import os
+import sys
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -14,7 +15,7 @@ def mainMenu():
 [1] Registrar novo login
 [2] Consulta de usuario
 [3] c
-[4] d
+[4] Deletar usuarios
 [0] Fechar programa\n ''')
     cursor()
 
@@ -23,8 +24,10 @@ def cursor():
         return register()
     elif escolha == '2':
         return userinfo()
+    elif escolha == '4':
+        return deleteUser()
     elif escolha == '0':
-        print('Fechando crud...')
+        sys.exit
 
 def register():
     clear()
@@ -71,5 +74,28 @@ def loginfo():
         users.append(log)
     for i in users:
         print(i)
+
+def deleteUser():
+    clear()
+    updatedlist = []
+    with open("logInfo.csv", newline="") as csvfile:
+      reader = csv.reader(csvfile)
+      user = input("Nome do User a ser removido:\n")
+      for row in reader:
+          if not row[0] == user:
+              updatedlist.append(row)
+      print('User Removido com sucesso!')
+      updatefile(updatedlist)
+
+def updatefile(updatedlist):
+    with open("logInfo.csv", "w", newline="") as csvfile:
+        Writer = csv.writer(csvfile)
+        Writer.writerows(updatedlist)
+    backToMenu = input('[0] para voltar ao menu\n')
+    if backToMenu == '0':
+        mainMenu()
+    else:
+        clear()
+        updatefile(updatedlist)
 
 mainMenu()
