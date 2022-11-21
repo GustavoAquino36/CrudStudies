@@ -14,7 +14,7 @@ def mainMenu():
 
 [1] Registrar novo login
 [2] Consulta de usuario
-[3] c
+[3] Edite usuarios (login necessario)
 [4] Deletar usuarios
 [0] Fechar programa\n ''')
     cursor()
@@ -24,10 +24,14 @@ def cursor():
         return register()
     elif escolha == '2':
         return userinfo()
+    elif escolha == '3':
+        return editUser()
     elif escolha == '4':
         return deleteUser()
     elif escolha == '0':
         sys.exit
+    else:
+        return mainMenu()
 
 def register():
     clear()
@@ -66,14 +70,37 @@ def showUserInfo():
         else:
             mainMenu()
 
-def loginfo():
+def editUser():
+    clear()
+    global userlogin
+    print('Login é necessario para adicionar informacoes ao proprio user!')
+    userlogin = input('User: ')
+    senha = getpass('Senha: ')
     userscsv = open('logInfo.csv', 'r')
     linhas = csv.reader(userscsv, delimiter=',')
     users = []
     for log in linhas:
         users.append(log)
     for i in users:
-        print(i)
+        if i[0] == userlogin and i[1] == senha:
+            logou = True
+            if logou:
+                addinfo()
+            else:
+                print('User n existe')
+
+def addinfo():
+    lerlog = open('logInfo.csv', 'r')
+    csvlog = csv.reader(lerlog, delimiter=',')
+    users = []
+    for log in csvlog:
+        users.append(log)
+    for i in users:
+        if i[0] == userlogin:
+            email = input('Email a ser vinculado ao usuario logado: ')
+            linkedin = input('Linkedin (/user): ')
+            data = open('userInfo.csv', 'a')
+            data.write(f'{i[0]},{email},{linkedin}\n')
 
 def deleteUser():
     clear()
