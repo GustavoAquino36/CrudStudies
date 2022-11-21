@@ -27,7 +27,7 @@ def cursor():
     elif escolha == '3':
         return editUser()
     elif escolha == '4':
-        return deleteUser()
+        return deleteUser(), deleteinfo()
     elif escolha == '0':
         sys.exit
     else:
@@ -88,6 +88,11 @@ def editUser():
                 addinfo()
             else:
                 print('User n existe')
+                backToMenu = input('Pressione qualquer botao para voltar ao menu: ')
+                if backToMenu == " ":
+                    mainMenu()
+                else:
+                    backToMenu()
 
 def addinfo():
     lerlog = open('logInfo.csv', 'r')
@@ -101,15 +106,22 @@ def addinfo():
             linkedin = input('Linkedin (/user): ')
             data = open('userInfo.csv', 'a')
             data.write(f'{i[0]},{email},{linkedin}\n')
+            backToMenu = input('[0] para voltar ao menu\n')
+            if backToMenu == '0':
+                mainMenu()
+            else:
+                mainMenu()
+
 
 def deleteUser():
+    global duser
     clear()
     updatedlist = []
     with open("logInfo.csv", newline="") as csvfile:
       reader = csv.reader(csvfile)
-      user = input("Nome do User a ser removido:\n")
+      duser = input("Nome do User a ser removido:\n")
       for row in reader:
-          if not row[0] == user:
+          if not row[0] == duser:
               updatedlist.append(row)
       print('User Removido com sucesso!')
       updatefile(updatedlist)
@@ -124,5 +136,20 @@ def updatefile(updatedlist):
     else:
         clear()
         updatefile(updatedlist)
+
+def deleteinfo():
+    clear()
+    updatedinfo = []
+    with open("userInfo.csv", newline="") as csvfile:
+      reader = csv.reader(csvfile)
+      for row in reader:
+          if not row[0] == duser:
+              updatedinfo.append(row)
+      updateinfo(updatedinfo)
+
+def updateinfo(updatedinfo):
+    with open("userInfo.csv", "w", newline="") as csvinfo:
+        Writer = csv.writer(csvinfo)
+        Writer.writerows(updatedinfo)
 
 mainMenu()
