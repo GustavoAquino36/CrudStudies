@@ -6,6 +6,10 @@ import sys
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def fecha():
+    clear()
+    print('Obrigado por utilizar meu CRUD, Finalizando...\nFeedbacks para github.com/Gustavoaquino36')
+
 def mainMenu():
     clear()
     global escolha
@@ -29,7 +33,7 @@ def cursor():
     elif escolha == '4':
         return deleteUser(), deleteinfo()
     elif escolha == '0':
-        sys.exit
+        return fecha()
     else:
         return mainMenu()
 
@@ -81,18 +85,16 @@ def editUser():
     users = []
     for log in linhas:
         users.append(log)
+    logou = False
     for i in users:
         if i[0] == userlogin and i[1] == senha:
             logou = True
             if logou:
                 addinfo()
-            else:
-                print('User n existe')
-                backToMenu = input('Pressione qualquer botao para voltar ao menu: ')
-                if backToMenu == " ":
-                    mainMenu()
-                else:
-                    backToMenu()
+    if not logou:
+        print('Usuario nao encontrado,')
+        input('Pressione qualquer botão para voltar ao menu inicial.')
+        mainMenu()
 
 def addinfo():
     lerlog = open('logInfo.csv', 'r')
@@ -111,7 +113,6 @@ def addinfo():
                 mainMenu()
             else:
                 mainMenu()
-
 
 def deleteUser():
     global duser
