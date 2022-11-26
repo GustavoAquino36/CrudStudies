@@ -1,7 +1,6 @@
 from getpass import *
 import csv
 import os
-import sys
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -29,7 +28,7 @@ def cursor():
     elif escolha == '2':
         return userinfo()
     elif escolha == '3':
-        return choiceEdit()
+        return editUser()
     elif escolha == '4':
         return deleteUser(), deleteinfo()
     elif escolha == '0':
@@ -68,18 +67,20 @@ def showUserInfo():
         else:
             mainMenu()
     except KeyError:
-        noUserError = input(f'User {user} nao encontrado, Gostaria de Registra-lo?\n')
-        if noUserError.casefold() in ['sim','yes','y','s','quero']:
-            register()
-        else:
-            mainMenu()
+        noUserError = input(f'User {user} nao encontrado ou sem informacoes registradas\npressione qualquer botao para voltar ao menu')
+        mainMenu()
 
-def choiceEdit():
-    choice = input('Gostaria de adicionar informacoes a um novo usario ou atualizar a de um ja existente?')
-    if choice in ['novo']:
-        editUser()
-    elif choice in ['existente']:
-        editInfo()
+def checkinfo():
+    try: 
+        readUsers = open('userInfo.csv', 'r')
+        linhas = csv.reader(readUsers, delimiter=',')
+        info = {}
+        for j in linhas:
+            info[j[0]] = j[:1]
+        if str(info[userlogin]) == str(f"['{userlogin}']"):
+            editInfo()
+    except KeyError:
+        addinfo()
 
 def editUser():
     clear()
@@ -97,11 +98,38 @@ def editUser():
         if i[0] == userlogin and i[1] == senha:
             logou = True
             if logou:
-                addinfo()
+                checkinfo()
     if not logou:
         print('Usuario nao encontrado,')
         input('Pressione qualquer botão para voltar ao menu inicial.')
         mainMenu()
+
+def editInfo():
+    readUsers = open('userInfo.csv', 'r')
+    linhas = csv.reader(readUsers, delimiter=',')
+    userDetail = {}
+    for log in linhas:
+        userDetail[log[0]] = log[1:]
+    clear()
+    print(f'User: {userlogin} \nEmail: {userDetail[userlogin][0]} \nLinkedin: {userDetail[userlogin][1]}')
+    email = input("Novo email : ")
+    linkedin = input("Novo linkedin : ")
+    for data in userDetail:
+        if data == userlogin:
+            update = True
+    if update:     
+        userDetail = (f'{userlogin},{email},{linkedin}')
+        updatedinfo = []
+    with open("userInfo.csv", newline="") as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+          if not row[0] == userlogin:
+            updatedinfo.append(row)
+        updateinfo(updatedinfo)
+    data2 = open('userInfo.csv', 'a')
+    data2.write(f'{userDetail}\n')
+    input('pressione qualquer botao para voltar ao menu')
+    mainMenu()
 
 def addinfo():
     lerlog = open('logInfo.csv', 'r')
@@ -159,33 +187,5 @@ def updateinfo(updatedinfo):
     with open("userInfo.csv", "w", newline="") as csvinfo:
         Writer = csv.writer(csvinfo)
         Writer.writerows(updatedinfo)
-
-def editInfo():
-    user = input('user a ser atualizado: ')
-    readUsers = open('userInfo.csv', 'r')
-    linhas = csv.reader(readUsers, delimiter=',')
-    userDetail = {}
-    for log in linhas:
-        userDetail[log[0]] = log[1:]
-    clear()
-    print(f'User: {user} \nEmail: {userDetail[user][0]} \nLinkedin: {userDetail[user][1]}')
-    email = input("Novo email : ")
-    linkedin = input("Novo linkedin : ")
-    for data in userDetail:
-        if data == user:
-            update = True
-    if update:     
-        userDetail = f'{user},{email},{linkedin}'
-        updatedinfo = []
-    with open("userInfo.csv", newline="") as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-          if not row[0] == user:
-            updatedinfo.append(row)
-        updateinfo(updatedinfo)
-    data2 = open('userInfo.csv', 'a')
-    data2.write(f'{userDetail}\n')
-    input('pressione qualquer botao para voltar ao menu')
-    mainMenu()
 
 mainMenu()
