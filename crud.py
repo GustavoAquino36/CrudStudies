@@ -29,7 +29,7 @@ def cursor():
     elif escolha == '2':
         return userinfo()
     elif escolha == '3':
-        return editUser()
+        return choiceEdit()
     elif escolha == '4':
         return deleteUser(), deleteinfo()
     elif escolha == '0':
@@ -73,6 +73,13 @@ def showUserInfo():
             register()
         else:
             mainMenu()
+
+def choiceEdit():
+    choice = input('Gostaria de adicionar informacoes a um novo usario ou atualizar a de um ja existente?')
+    if choice in ['novo']:
+        editUser()
+    elif choice in ['existente']:
+        editInfo()
 
 def editUser():
     clear()
@@ -152,5 +159,33 @@ def updateinfo(updatedinfo):
     with open("userInfo.csv", "w", newline="") as csvinfo:
         Writer = csv.writer(csvinfo)
         Writer.writerows(updatedinfo)
+
+def editInfo():
+    user = input('user a ser atualizado: ')
+    readUsers = open('userInfo.csv', 'r')
+    linhas = csv.reader(readUsers, delimiter=',')
+    userDetail = {}
+    for log in linhas:
+        userDetail[log[0]] = log[1:]
+    clear()
+    print(f'User: {user} \nEmail: {userDetail[user][0]} \nLinkedin: {userDetail[user][1]}')
+    email = input("Novo email : ")
+    linkedin = input("Novo linkedin : ")
+    for data in userDetail:
+        if data == user:
+            update = True
+    if update:     
+        userDetail = f'{user},{email},{linkedin}'
+        updatedinfo = []
+    with open("userInfo.csv", newline="") as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+          if not row[0] == user:
+            updatedinfo.append(row)
+        updateinfo(updatedinfo)
+    data2 = open('userInfo.csv', 'a')
+    data2.write(f'{userDetail}\n')
+    input('pressione qualquer botao para voltar ao menu')
+    mainMenu()
 
 mainMenu()
